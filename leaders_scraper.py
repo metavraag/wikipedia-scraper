@@ -11,3 +11,11 @@ leaders_url = f"{root_url}/leaders"
 cookie_response = requests.get(cooke_url)
 cookies = cookie_response.cookies
 print(cookies)
+
+# status_response = requests.get(status_url)
+status_response = requests.get(status_url, cookies=cookies)
+
+print(status_response.json())
+
+countries = requests.get(contries_url, cookies=cookies).json()
+print(countries)
