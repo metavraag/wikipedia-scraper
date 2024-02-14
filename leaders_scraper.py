@@ -24,21 +24,18 @@ def get_leaders():
     print(countries)
 
     leaders_per_country = {}
-
-    # for country in countries:
-    #     leaders_response = requests.get(
-    #         leaders_url, params={"country": country}, cookies=cookies
-    #     )
-    #     # print(country, len(leaders_response.json()))
-    #     leaders_per_country[country] = leaders_response.json()
-    #     # print(leaders_response.json()[0]["wikipedia_url"])
-
     leaders_per_country = {
         country: requests.get(
             leaders_url, params={"country": country}, cookies=cookies
         ).json()
         for country in countries
     }
+    for country, leaders in leaders_per_country.items():
+        for leader in leaders:
+            print(leader["last_name"])
+            w_url = leader["wikipedia_url"]
+            leader["first_paragraph"] = get_first_paragraph(w_url)
+
     return leaders_per_country
 
 
