@@ -19,3 +19,25 @@ print(status_response.json())
 
 countries = requests.get(contries_url, cookies=cookies).json()
 print(countries)
+
+leaders_per_country = {}
+
+# for country in countries:
+#     leaders_response = requests.get(
+#         leaders_url, params={"country": country}, cookies=cookies
+#     )
+#     # print(country, len(leaders_response.json()))
+#     leaders_per_country[country] = leaders_response.json()
+#     # print(leaders_response.json()[0]["wikipedia_url"])
+
+
+leaders_per_country = {
+    country: requests.get(
+        leaders_url, params={"country": country}, cookies=cookies
+    ).json()
+    for country in countries
+}
+
+
+print(leaders_per_country)
+print(len(leaders_per_country))
