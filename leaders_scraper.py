@@ -1,4 +1,6 @@
 import requests
+from bs4 import BeautifulSoup
+import re
 
 
 def get_leaders():
@@ -42,6 +44,15 @@ def get_leaders():
 
 # print(leaders_per_country())
 # print(len(leaders_per_country))
+def get_first_paragraph(wikipedia_url):
+    print(wikipedia_url)
+    response = requests.get(wikipedia_url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    first_p_with_b = soup.select_one("p:has(b)").text
+    # todo: remove citation
+    first_p_with_b = re.sub(r"\[.*\]", "", first_p_with_b)
+    return first_p_with_b.strip()
+
 
 if __name__ == "__main__":
     print(len(get_leaders()))
