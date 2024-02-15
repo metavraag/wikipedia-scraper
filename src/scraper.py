@@ -91,7 +91,7 @@ if __name__ == "__main__":
     # print(scraper.cookies)
     # print(scraper.get_countries())
     countries = scraper.get_countries()
-    print(countries)
+    # print(countries)
     scraper.get_leaders(countries)
     for country, leaders in scraper.leaders_data.items():
         for leader in leaders:
