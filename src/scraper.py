@@ -1,6 +1,4 @@
-import requests
-from requests.exceptions import RequestException
-from bs4 import BeautifulSoup
+import requests from requests.exceptions import RequestException from bs4 import BeautifulSoup
 import time
 import re
 import json
@@ -100,7 +98,7 @@ if __name__ == "__main__":
                 leader["wikipedia_url"]
             )
 
-    scraper.to_json_file("leaders_data_api.json")
+    scraper.to_json_file("data/leaders_data_api.json")
     # print(
     #     scraper.get_first_paragraph("https://en.wikipedia.org/wiki/George_Washington")
     # )
