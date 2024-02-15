@@ -5,6 +5,9 @@ import time
 import re
 import json
 
+# import cProfile
+# cProfile.run('re.compile("foo|bar")')
+
 
 class WikipediaScraper:
     def __init__(self, base_url: str) -> None:
@@ -60,6 +63,8 @@ class WikipediaScraper:
 
 
 if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run("get_first_paragraph()", "profile_stats")
     # instantiate the WikipediaScraper object
     scraper = WikipediaScraper("https://country-leaders.onrender.com")
     # print(scraper)
