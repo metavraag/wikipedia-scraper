@@ -56,6 +56,14 @@ class WikipediaScraper:
         first_p_with_b = re.sub(r"\[.*\]", "", first_p_with_b)
         return first_p_with_b.strip()
 
+    def get_first_paragraph_api(self, wikipedia_url: str) -> str:
+        # requests.get("https://en.wikipedia.org/api/rest_v1/page/summary/James_Monroe").json()['extract']
+        wikipedia_api_url = wikipedia_url.replace(
+            "org/wiki", "org/api/rest_v1/page/summary"
+        )
+        first_paragraph = requests.get(wikipedia_api_url).json()["extract"]
+        return first_paragraph
+
     def to_json_file(self, filepath: str) -> None:
         with open(filepath, "w") as f:
             json.dump(self.leaders_data, f, indent=4)
@@ -63,6 +71,18 @@ class WikipediaScraper:
 
 
 if __name__ == "__main__":
+    # country_to_wikipedia_api = {
+    #     "fr": "https://fr.wikipedia.org/api/rest_v1/page/summary/",
+    #     "us": "https://en.wikipedia.org/api/rest_v1/page/summary/",
+    #     "ru": "https://ru.wikipedia.org/api/rest_v1/page/summary/",
+    #     "ma": "https://ar.wikipedia.org/api/rest_v1/page/summary/",
+    #     "be": "https://nl.wikipedia.org/api/rest_v1/page/summary/",
+    # }
+    # country_to_language = {"fr": "fr", "us": "en", "ru": "ru", "ma": "ar", "be": "nl"}
+
+    # def country_to_wikipedia_url(country: str) -> str:
+    #     return f"https://{country}.wikipedia.org/api/rest_v1/page/summary/"
+
     # import cProfile
     # cProfile.run("get_first_paragraph()", "profile_stats")
     # instantiate the WikipediaScraper object
@@ -75,11 +95,12 @@ if __name__ == "__main__":
     scraper.get_leaders(countries)
     for country, leaders in scraper.leaders_data.items():
         for leader in leaders:
-            leader["first_paragraph"] = scraper.get_first_paragraph(
+            # leader["first_paragraph"] = scraper.get_first_paragraph(
+            leader["first_paragraph"] = scraper.get_first_paragraph_api(
                 leader["wikipedia_url"]
             )
 
-    scraper.to_json_file("leaders_data2.json")
+    scraper.to_json_file("leaders_data_api.json")
     # print(
     #     scraper.get_first_paragraph("https://en.wikipedia.org/wiki/George_Washington")
     # )
