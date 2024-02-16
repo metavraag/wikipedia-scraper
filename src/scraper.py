@@ -1,8 +1,8 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor
-from requests.exceptions import RequestException
+
+# from requests.exceptions import RequestException
 from bs4 import BeautifulSoup
-import time
 import re
 import json
 import csv
@@ -43,9 +43,7 @@ class WikipediaScraper:
             response = self.session.get(self.country_endpoint)
             response.raise_for_status()  # This checks for HTTP errors.
             return response.json()
-        except (
-            Exception
-        ) as e:  # Catches any exception, including HTTP errors and JSON decoding errors.
+        except Exception as e:  # Catches any exception HTTP JSON.
             raise ScraperException(f"Error fetching countries: {e}")
 
     def get_leaders(self, country: str) -> None:
@@ -131,28 +129,3 @@ if __name__ == "__main__":
 
     # scraper.to_json_file("data/leaders_data_api.json")
     scraper.to_csv_file("data/leaders_data_api.csv")
-    # try:
-    #     scraper = WikipediaScraper("https://country-leaders.onrender.com")
-    #     countries = scraper.get_countries()
-    #     scraper.get_leaders(countries)
-
-    #     # for country, leaders in scraper.leaders_data.items():
-    #     #     for leader in leaders:
-    #     #         # leader["first_paragraph"] = scraper.get_first_paragraph(
-    #     #         leader["first_paragraph"] = scraper.get_first_paragraph_api(
-    #     #             leader["wikipedia_url"]
-    #     #         )
-
-    #     with ThreadPoolExecutor(max_workers=5) as executor:
-    #         futures = [
-    #             executor.submit(fetch_first_paragraph, scraper, leader)
-    #             for country, leaders in scraper.leaders_data.items()
-    #             for leader in leaders
-    #         ]
-    #         for future in futures:
-    #             future.result()  # Wait for all
-
-    #     # scraper.to_json_file("data/leaders_data_api.json")
-    #     scraper.to_csv_file("data/leaders_data_api.csv")
-    # except ScraperException as e:
-    #     print(e)

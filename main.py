@@ -9,7 +9,9 @@ def main():
 
     def fetch_first_paragraph(scraper, leader):
         # leader["first_paragraph"] = scraper.get_first_paragraph_api(
-        leader["first_paragraph"] = scraper.get_first_paragraph(leader["wikipedia_url"])
+        leader["first_paragraph"] = scraper.get_first_paragraph_api(
+            leader["wikipedia_url"]
+        )
         return leader
 
     with ThreadPoolExecutor(max_workers=5) as executor:
