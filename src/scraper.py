@@ -29,12 +29,14 @@ class WikipediaScraper:
         return requests.get(self.cookies_endpoint).cookies
 
     def get_countries(self) -> list:
-        return requests.get(self.country_endpoint, cookies=self.cookies).json()
+        return self.session.get(self.country_endpoint).json()
+        # return requests.get(self.country_endpoint, cookies=self.cookies).json()
 
     def get_leaders(self, country: str) -> None:
         self.leaders_data = {
-            country: requests.get(
-                self.leaders_endpoint, params={"country": country}, cookies=self.cookies
+            country: self.session.get(
+                self.leaders_endpoint,
+                params={"country": country},  # cookies=self.cookies
             ).json()
             for country in self.get_countries()
         }
@@ -124,5 +126,5 @@ if __name__ == "__main__":
         for future in futures:
             future.result()  # Wait for all futures to complete
 
-    scraper.to_json_file("data/leaders_data_api.json")
+    # scraper.to_json_file("data/leaders_data_api.json")
     scraper.to_csv_file("data/leaders_data_api.csv")
