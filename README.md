@@ -57,10 +57,10 @@ pip install -r requirements.txt
 
 
 To run the script, you can execute the `main.py` file from your command line:
+```
+python main.py
 
-    ```
-    python main.py
-    ```
+```
 
 
  Upon executing python main.py, the script initializes a WikipediaScraper with a specific URL, retrieves a list of countries, and fetches their leaders' details. It then concurrently gathers the first paragraph of each leader's Wikipedia page, enhancing efficiency through parallel processing. 
