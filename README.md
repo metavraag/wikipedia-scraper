@@ -3,13 +3,8 @@
 
 
 ## 🏢 Description
+The script for this project automates the collection of data on countries and their political leaders from various sources, including APIs and Wikipedia. It processes this information, focusing on aspects like name, office, and additional details, and compiles it into a structured JSON or CSV file. This approach emphasizes key programming concepts such as web scraping, data manipulation, and file operations, aiming to provide a comprehensive dataset for educational or analytical purposes.
 
-Your company moved to a new office at the Gent Zuiderport. Its an openspace with 6 tables of 4 seats. As many of you are new colleagues, you come up with the idea of changing seats everyday and get to know each other better by working side by side with your new colleagues. 
-
-This script runs everyday to re-assign everybody to a new seat.
-
-![coworking_img](https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fGRpdmVyc2UlMjB0ZWFtfGVufDB8fDB8fHwy)
-![coworking_img](https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fGRpdmVyc2UlMjB0ZWFtfGVufDB8fDB8fHwy)
 ![logo](logo.webp)
 
 ## 📦 Repo structure
@@ -28,41 +23,60 @@ This script runs everyday to re-assign everybody to a new seat.
 
 ## 🛎️ Usage
 
-1. Clone the repository to your local machine.
+Clone the repository to your local machine.
+```
+git clone https://github.com/metavraag/wikipedia-scraper.git
 
-2 .To run the script, you can execute the `main.py` file from your command line:
+```
+This command clones the project into a `wikipedia-scraper` directory in your current location.
+
+## Set Up a Virtual Environment
+
+Navigate to the project directory:
+```
+cd wikipedia-scraper
+```
+Create a virtual environment:
+```
+python3 -m venv env
+```
+Activate the virtual environment:
+
+- On Unix/macOS: `source env/bin/activate`
+- On Windows: `.\env\Scripts\activate`
+
+### Install Dependencies
+
+With the virtual environment activated, install the required dependencies:
+```
+pip install -r requirements.txt
+```
+
+
+
+To run the script, you can execute the `main.py` file from your command line:
 
     ```
     python main.py
     ```
 
-3. The script reads your input file, and organizes your colleagues to random seat assignments. The resulting seating plan is displayed in your console and also saved to an "output.csv" file in your root directory. 
 
-```python
-input_filepath = "new_colleagues.csv"
-output_filename = "output.csv"
+ Upon executing python main.py, the script initializes a WikipediaScraper with a specific URL, retrieves a list of countries, and fetches their leaders' details. It then concurrently gathers the first paragraph of each leader's Wikipedia page, enhancing efficiency through parallel processing. 
 
-# Creates a list that contains all the colleagues names
-names = utils.read_names_from_csv(input_filepath)
+Finally, the script compiles this data into a CSV file, with an optional capability (commented out) to save it as a JSON file instead. This process effectively combines web scraping and concurrent programming to aggregate and store information on political leaders.
 
-# create an OpenSpace()
-open_space = OpenSpace()
+Leveraging multithreading, the script operates with remarkable speed, completing its tasks within 1-2 seconds. This efficiency is achieved by concurrently fetching data for multiple leaders, significantly reducing the overall execution time.
+![speed](speed.jpg)
 
-# assign a colleague randomly to a table
-open_space.organize(names)
+The script saves the results of the scraping process into the data folder, where the collected data about countries and their political leaders, including the first paragraphs from their Wikipedia pages, is stored in a CSV file named leaders_data_api.csv. This structured storage allows for easy access and analysis of the scraped data.
 
-# save the seat assigments to a new file
-open_space.store(output_filename)
 
-# display assignments in the terminal
-open_space.display()
-```
 ## ⏱️ Timeline
 
-This project took two days for completion.
+This project took 3 days for completion.
 
 ## 📌 Personal Situation
 This project was done as part of the AI Boocamp at BeCode.org. 
 
-Connect with me on [LinkedIn](https://www.linkedin.com/in/vriveraq/).
+Connect with me on [LinkedIn](https://www.linkedin.com/in/ivan-panafidin-8937b62b1/).
 
