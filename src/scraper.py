@@ -8,6 +8,14 @@ import json
 import csv
 
 
+class ScraperException(Exception):
+    """Exception raised for errors encountered during the scraping process."""
+
+    def __init__(self, message="An error occurred in the scraping process"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class WikipediaScraper:
     def __init__(self, base_url: str) -> None:
         self.session = requests.Session()
@@ -26,17 +34,25 @@ class WikipediaScraper:
 
     def refresh_cookie(self) -> object:
         return self.session.get(self.cookies_endpoint).cookies
-        return requests.get(self.cookies_endpoint).cookies
+
+    # def get_countries(self) -> list:
+    #     return self.session.get(self.country_endpoint).json()
 
     def get_countries(self) -> list:
-        return self.session.get(self.country_endpoint).json()
-        # return requests.get(self.country_endpoint, cookies=self.cookies).json()
+        try:
+            response = self.session.get(self.country_endpoint)
+            response.raise_for_status()  # This checks for HTTP errors.
+            return response.json()
+        except (
+            Exception
+        ) as e:  # Catches any exception, including HTTP errors and JSON decoding errors.
+            raise ScraperException(f"Error fetching countries: {e}")
 
     def get_leaders(self, country: str) -> None:
         self.leaders_data = {
             country: self.session.get(
                 self.leaders_endpoint,
-                params={"country": country},  # cookies=self.cookies
+                params={"country": country},
             ).json()
             for country in self.get_countries()
         }
@@ -45,8 +61,6 @@ class WikipediaScraper:
         response = self.session.get(wikipedia_url)
         soup = BeautifulSoup(response.text, "html.parser")
         first_p_with_b = soup.select_one("p:has(b)").text
-        # todo: remove citation
-        # first_p_with_b = re.sub(r"\[.*\]", "", first_p_with_b)
         first_p_with_b = self.sanitize.sub("", first_p_with_b)
         return first_p_with_b.strip()
 
@@ -55,7 +69,6 @@ class WikipediaScraper:
         wikipedia_api_url = wikipedia_url.replace(
             "org/wiki", "org/api/rest_v1/page/summary"
         )
-        # first_paragraph = requests.get(wikipedia_api_url).json()["extract"]
 
         first_paragraph = self.session.get(wikipedia_api_url).json()["extract"]
         first_paragraph = self.sanitize.sub("", first_paragraph)
@@ -66,7 +79,7 @@ class WikipediaScraper:
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(self.leaders_data, f, ensure_ascii=False, indent=4)
 
-    def to_csv_file(self, filename):
+    def to_csv_file(self, filename: str) -> None:
         # Define the header of the CSV file
         headers = [
             "id",
@@ -104,27 +117,42 @@ if __name__ == "__main__":
         return leader
 
     scraper = WikipediaScraper("https://country-leaders.onrender.com")
-    # print(scraper)
-    # print(scraper.cookies)
     countries = scraper.get_countries()
-    # print(countries)
     scraper.get_leaders(countries)
 
-    for country, leaders in scraper.leaders_data.items():
-        for leader in leaders:
-            # leader["first_paragraph"] = scraper.get_first_paragraph(
-            leader["first_paragraph"] = scraper.get_first_paragraph_api(
-                leader["wikipedia_url"]
-            )
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
             executor.submit(fetch_first_paragraph, scraper, leader)
             for country, leaders in scraper.leaders_data.items()
             for leader in leaders
         ]
         for future in futures:
-            future.result()  # Wait for all futures to complete
+            future.result()  # Wait for all
 
     # scraper.to_json_file("data/leaders_data_api.json")
     scraper.to_csv_file("data/leaders_data_api.csv")
+    # try:
+    #     scraper = WikipediaScraper("https://country-leaders.onrender.com")
+    #     countries = scraper.get_countries()
+    #     scraper.get_leaders(countries)
+
+    #     # for country, leaders in scraper.leaders_data.items():
+    #     #     for leader in leaders:
+    #     #         # leader["first_paragraph"] = scraper.get_first_paragraph(
+    #     #         leader["first_paragraph"] = scraper.get_first_paragraph_api(
+    #     #             leader["wikipedia_url"]
+    #     #         )
+
+    #     with ThreadPoolExecutor(max_workers=5) as executor:
+    #         futures = [
+    #             executor.submit(fetch_first_paragraph, scraper, leader)
+    #             for country, leaders in scraper.leaders_data.items()
+    #             for leader in leaders
+    #         ]
+    #         for future in futures:
+    #             future.result()  # Wait for all
+
+    #     # scraper.to_json_file("data/leaders_data_api.json")
+    #     scraper.to_csv_file("data/leaders_data_api.csv")
+    # except ScraperException as e:
+    #     print(e)
