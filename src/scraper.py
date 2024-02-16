@@ -1,11 +1,9 @@
-import requests from requests.exceptions import RequestException from bs4 import BeautifulSoup
+import requests
+from requests.exceptions import RequestException
+from bs4 import BeautifulSoup
 import time
 import re
 import json
-
-# import cProfile
-# cProfile.run('re.compile("foo|bar")')
-
 
 class WikipediaScraper:
     def __init__(self, base_url: str) -> None:
@@ -69,25 +67,10 @@ class WikipediaScraper:
 
 
 if __name__ == "__main__":
-    # country_to_wikipedia_api = {
-    #     "fr": "https://fr.wikipedia.org/api/rest_v1/page/summary/",
-    #     "us": "https://en.wikipedia.org/api/rest_v1/page/summary/",
-    #     "ru": "https://ru.wikipedia.org/api/rest_v1/page/summary/",
-    #     "ma": "https://ar.wikipedia.org/api/rest_v1/page/summary/",
-    #     "be": "https://nl.wikipedia.org/api/rest_v1/page/summary/",
-    # }
-    # country_to_language = {"fr": "fr", "us": "en", "ru": "ru", "ma": "ar", "be": "nl"}
 
-    # def country_to_wikipedia_url(country: str) -> str:
-    #     return f"https://{country}.wikipedia.org/api/rest_v1/page/summary/"
-
-    # import cProfile
-    # cProfile.run("get_first_paragraph()", "profile_stats")
-    # instantiate the WikipediaScraper object
     scraper = WikipediaScraper("https://country-leaders.onrender.com")
     # print(scraper)
     # print(scraper.cookies)
-    # print(scraper.get_countries())
     countries = scraper.get_countries()
     # print(countries)
     scraper.get_leaders(countries)
@@ -99,9 +82,3 @@ if __name__ == "__main__":
             )
 
     scraper.to_json_file("data/leaders_data_api.json")
-    # print(
-    #     scraper.get_first_paragraph("https://en.wikipedia.org/wiki/George_Washington")
-    # )
-    # for country in countries:
-    #     scraper.get_leaders(country)
-    # print(scraper.leaders_data)
