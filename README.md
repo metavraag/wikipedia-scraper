@@ -9,20 +9,21 @@ Your company moved to a new office at the Gent Zuiderport. Its an openspace with
 This script runs everyday to re-assign everybody to a new seat.
 
 ![coworking_img](https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fGRpdmVyc2UlMjB0ZWFtfGVufDB8fDB8fHwy)
+![coworking_img](https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fGRpdmVyc2UlMjB0ZWFtfGVufDB8fDB8fHwy)
+![logo](logo.webp)
 
 ## 📦 Repo structure
 
 ```
 .
-├── src/
-│   ├── openspace.py
-│   ├── table.py
-│   └── utils.py
-├── .gitignore
+├── data
+│   └── leaders_data.csv
 ├── main.py
-├── new_colleagues.csv
-├── output.csv
-└── README.md
+├── README.md
+├── requirements.txt
+└── src
+    ├── __init__.py
+    └── scraper.py
 ```
 
 ## 🛎️ Usage
