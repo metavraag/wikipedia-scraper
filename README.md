@@ -55,7 +55,6 @@ pip install -r requirements.txt
 ```
 
 
-
 To run the script, you can execute the `main.py` file from your command line:
 ```
 python main.py
@@ -68,6 +67,7 @@ python main.py
 Finally, the script compiles this data into a CSV file, with an optional capability to save it as a JSON file instead. This process effectively combines web scraping and concurrent programming to aggregate and store information on political leaders.
 
 Leveraging multithreading, the script operates with remarkable speed, completing its tasks within 1-2 seconds. This efficiency is achieved by concurrently fetching data for multiple leaders, significantly reducing the overall execution time.
+
 ![speed](speed.jpg)
 
 The script incorporates two methods for data extraction: parsing Wikipedia pages using Beautiful Soup (`get_first_paragraph`) and leveraging a hidden API for direct data retrieval (`get_first_paragraph_api`). 
